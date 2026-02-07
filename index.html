@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>LOVE QUEST ❤️</title>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+
+<style>
+body {
+  margin: 0;
+  height: 100vh;
+  background: #1a1a3d;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: 'Press Start 2P', cursive;
+  color: white;
+}
+
+.game {
+  width: 95%;
+  max-width: 520px;
+  background: #34347a;
+  border: 6px solid white;
+  box-shadow: 0 0 0 6px black;
+  padding: 16px;
+  text-align: center;
+  position: relative;
+}
+
+.title {
+  font-size: 12px;
+  margin-bottom: 10px;
+}
+
+.arena {
+  height: 180px;
+  background: #0b0b0b;
+  border: 4px solid black;
+  position: relative;
+  overflow: hidden;
+  margin-bottom: 10px;
+}
+
+/* STORY */
+.story-text {
+  font-size: 10px;
+  line-height: 1.8;
+  padding-top: 50px;
+}
+
+.blink {
+  animation: blink 1s steps(1) infinite;
+}
+
+@keyframes blink {
+  50% { opacity: 0; }
+}
+
+/* BUTTON */
+.btn {
+  padding: 10px;
+  font-size: 10px;
+  background: #7cff6b;
+  border: 4px solid black;
+  cursor: pointer;
+}
+
+/* GAME OBJECTS */
+.obj {
+  position: absolute;
+  padding: 10px;
+  font-size: 12px;
+  border: 3px solid black;
+  cursor: pointer;
+}
+
+.heart { background: #ff4b6e; }
+.fake { background: #555; }
+.yes { background: #7cff6b; }
+.no { background: #ff6b6b; }
+
+/* AVATARS */
+.avatar {
+  position: absolute;
+  bottom: 20px;
+  width: 24px;
+  height: 24px;
+  display: grid;
+  grid-template-columns: repeat(3, 8px);
+}
+
+.you { background: #6bc1ff; }
+.crush { background: #ff77aa; }
+
+.pixel {
+  width: 8px;
+  height: 8px;
+  background: black;
+}
+
+/* CONFETTI */
+.confetti {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  animation: fall 3s linear forwards;
+}
+
+@keyframes fall {
+  from { transform: translateY(-10px); }
+  to { transform: translateY(100vh); }
+}
+
+/* GLITCH EFFECT */
+.glitch {
+  animation: glitch 0.15s infinite;
+}
+
+@keyframes glitch {
+  0% { transform: translate(0); }
+  20% { transform: translate(-2px, 2px); }
+  40% { transform: translate(2px, -2px); }
+  60% { transform: translate(-1px, 1px); }
+  80% { transform: translate(1px, -1px); }
+}
+
+/* SECRET ENDING */
+.secret {
+  font-size: 11px;
+  color: #ffb6ff;
+  margin-top: 12px;
+}
+
+.hidden { display: none; }
+.win {
+  font-size: 11px;
+  color: #ffe66d;
+}
+</style>
+</head>
+
+<body>
+
+<div class="game" id="game">
+  <div class="title" id="title">A PIXEL STORY BEGINS...</div>
+  <div class="arena" id="arena">
+    <div class="story-text" id="storyText"></div>
+  </div>
+  <button class="btn" id="btn">START</button>
+
+  <div class="win hidden" id="win">
+    🎉 YOU WIN 🎉<br><br>
+    WILL YOU BE MINE? ❤️
+  </div>
+
+  <div class="secret hidden" id="secret">
+    💖 SECRET ENDING UNLOCKED 💖<br><br>
+    YOU DIDN’T JUST WIN THE GAME…<br>
+    YOU WON MY HEART 😌<br><br>
+    PLAYER 1 🤝 PLAYER 2<br>
+    FOREVER MODE: ON 💑
+  </div>
+</div>
+
+<script>
+const arena = document.getElementById("arena");
+const storyText = document.getElementById("storyText");
+const btn = document.getElementById("btn");
+const win = document.getElementById("win");
+const secret = document.getElementById("secret");
+const title = document.getElementById("title");
+const game = document.getElementById("game");
+
+const story = [
+  "IN A WORLD FULL OF RANDOM MOMENTS...",
+  "TWO HEARTS CROSSED PATHS",
+  "LAUGHS TURNED INTO MEMORIES",
+  "ONE QUESTION REMAINS..."
+];
+
+let line = 0;
+let char = 0;
+let typing;
+
+function typeStory() {
+  if (char < story[line].length) {
+    storyText.innerHTML += story[line][char++];
+    typing = setTimeout(typeStory, 40);
+  } else {
+    storyText.innerHTML += "<br><br><span class='blink'>PRESS START ▮</span>";
+  }
+}
+
+btn.onclick = () => {
+  if (line < story.length) {
+    clearTimeout(typing);
+    storyText.innerHTML = "";
+    char = 0;
+    typeStory();
+    line++;
+  } else {
+    btn.classList.add("hidden");
+    startAvatars();
+  }
+};
+
+typeStory();
+
+/* AVATAR WALK-IN */
+function startAvatars() {
+  arena.innerHTML = "";
+  title.innerText = "THE JOURNEY BEGINS";
+
+  const you = createAvatar("you");
+  const crush = createAvatar("crush");
+
+  let pos = -30;
+  const walk = setInterval(() => {
+    pos += 2;
+    you.style.left = pos + "px";
+    crush.style.left = (arena.clientWidth - pos - 24) + "px";
+    if (pos > 200) {
+      clearInterval(walk);
+      startLevel1();
+    }
+  }, 30);
+}
+
+function createAvatar(type) {
+  const a = document.createElement("div");
+  a.className = "avatar " + type;
+  for (let i = 0; i < 9; i++) {
+    a.appendChild(document.createElement("div")).className = "pixel";
+  }
+  arena.appendChild(a);
+  return a;
+}
+
+/* LEVEL 1 */
+function startLevel1() {
+  arena.innerHTML = "";
+  title.innerText = "LEVEL 1 — TAP THE HEART ❤️";
+
+  const heart = createObj("❤️", "heart");
+  moveRandom(heart);
+  const move = setInterval(() => moveRandom(heart), 700);
+
+  heart.onclick = () => {
+    clearInterval(move);
+    startLevel2();
+  };
+}
+
+/* LEVEL 2 */
+function startLevel2() {
+  arena.innerHTML = "";
+  title.innerText = "LEVEL 2 — FIND THE REAL HEART 💖";
+
+  const real = createObj("❤️", "heart");
+  real.onclick = startLevel3;
+
+  for (let i = 0; i < 4; i++) {
+    const fake = createObj("💔", "fake");
+    fake.onclick = () => moveRandom(fake);
+  }
+
+  randomizeAll();
+}
+
+/* LEVEL 3 */
+function startLevel3() {
+  arena.innerHTML = "";
+  title.innerText = "FINAL LEVEL — CHOOSE WISELY 😳";
+
+  const yes = createObj("YES", "yes");
+  yes.style.left = "200px";
+  yes.style.top = "70px";
+
+  yes.onclick = () => {
+    showWin();
+    setTimeout(secretEnding, 2000);
+  };
+
+  for (let i = 0; i < 3; i++) {
+    const no = createObj("NO", "no");
+    moveRandom(no);
+    no.onclick = () => moveRandom(no);
+  }
+}
+
+function showWin() {
+  arena.innerHTML = "";
+  win.classList.remove("hidden");
+  confetti(120);
+}
+
+/* SECRET ENDING */
+function secretEnding() {
+  game.classList.add("glitch");
+  setTimeout(() => {
+    game.classList.remove("glitch");
+    win.classList.add("hidden");
+    secret.classList.remove("hidden");
+    confetti(250);
+  }, 800);
+}
+
+/* HELPERS */
+function createObj(text, cls) {
+  const el = document.createElement("div");
+  el.className = "obj " + cls;
+  el.textContent = text;
+  arena.appendChild(el);
+  return el;
+}
+
+function moveRandom(el) {
+  el.style.left = Math.random() * 360 + "px";
+  el.style.top = Math.random() * 120 + "px";
+}
+
+function randomizeAll() {
+  document.querySelectorAll(".obj").forEach(moveRandom);
+}
+
+function confetti(count) {
+  const colors = ["#ff77aa", "#ffe66d", "#7cff6b", "#6bc1ff"];
+  for (let i = 0; i < count; i++) {
+    const c = document.createElement("div");
+    c.className = "confetti";
+    c.style.left = Math.random() * window.innerWidth + "px";
+    c.style.background = colors[Math.floor(Math.random() * colors.length)];
+    document.body.appendChild(c);
+    setTimeout(() => c.remove(), 3000);
+  }
+}
+</script>
+
+</body>
+</html>
