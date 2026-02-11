@@ -2,338 +2,320 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>LOVE QUEST ❤️</title>
-<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>A Candlelit Letter ❤️</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Playfair+Display&display=swap" rel="stylesheet">
 
 <style>
-body {
-  margin: 0;
-  height: 100vh;
-  background: #1a1a3d;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-family: 'Press Start 2P', cursive;
-  color: white;
+*{margin:0;padding:0;box-sizing:border-box;}
+
+body{
+  height:100vh;
+  background: radial-gradient(circle at top, #1b1f3b, #0b0f2a);
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  font-family:'Playfair Display', serif;
+  overflow:hidden;
 }
 
-.game {
-  width: 95%;
-  max-width: 520px;
-  background: #34347a;
-  border: 6px solid white;
-  box-shadow: 0 0 0 6px black;
-  padding: 16px;
-  text-align: center;
-  position: relative;
+/* 🌌 vignette */
+body::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:radial-gradient(circle, transparent 40%, rgba(0,0,0,.8));
+  pointer-events:none;
 }
 
-.title {
-  font-size: 12px;
-  margin-bottom: 10px;
+/* 🕯️ floating candle glow */
+.glow{
+  position:absolute;
+  width:160px;
+  height:160px;
+  background:radial-gradient(circle, rgba(255,183,77,.4), transparent 70%);
+  animation:flicker 3s infinite alternate;
+  pointer-events:none;
 }
 
-.arena {
-  height: 180px;
-  background: #0b0b0b;
-  border: 4px solid black;
-  position: relative;
-  overflow: hidden;
-  margin-bottom: 10px;
+@keyframes flicker{
+  from{opacity:.6; transform:scale(1);}
+  to{opacity:.9; transform:scale(1.08);}
 }
 
-/* STORY */
-.story-text {
-  font-size: 10px;
-  line-height: 1.8;
-  padding-top: 50px;
+/* INTRO */
+#intro{
+  color:#fbeee6;
+  text-align:center;
+  animation:fadeIn 3s forwards;
 }
 
-.blink {
-  animation: blink 1s steps(1) infinite;
+@keyframes fadeIn{
+  from{opacity:0;transform:translateY(-25px);}
+  to{opacity:1;}
 }
 
-@keyframes blink {
-  50% { opacity: 0; }
+/* 💌 ENVELOPE */
+#envelopeBox{
+  display:none;
+  cursor:pointer;
+  text-align:center;
 }
 
-/* BUTTON */
-.btn {
-  padding: 10px;
-  font-size: 10px;
-  background: #7cff6b;
-  border: 4px solid black;
-  cursor: pointer;
+.envelope{
+  width:min(90vw,520px);
+  height:min(60vw,340px);
+  background:linear-gradient(#fdf1e7,#fff);
+  border-radius:24px;
+  box-shadow:0 40px 90px rgba(255,183,77,.35);
+  position:relative;
+  overflow:hidden;
 }
 
-/* GAME OBJECTS */
-.obj {
-  position: absolute;
-  padding: 10px;
-  font-size: 12px;
-  border: 3px solid black;
-  cursor: pointer;
+.envelope::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:linear-gradient(135deg,#ffd8a8,#ffb703);
+  clip-path:polygon(0 0,50% 65%,100% 0);
+  transform-origin:top;
+  transition:transform 2.2s ease;
 }
 
-.heart { background: #ff4b6e; }
-.fake { background: #555; }
-.yes { background: #7cff6b; }
-.no { background: #ff6b6b; }
-
-/* AVATARS */
-.avatar {
-  position: absolute;
-  bottom: 20px;
-  width: 24px;
-  height: 24px;
-  display: grid;
-  grid-template-columns: repeat(3, 8px);
+.envelope.open::before{
+  transform:rotateX(180deg);
 }
 
-.you { background: #6bc1ff; }
-.crush { background: #ff77aa; }
-
-.pixel {
-  width: 8px;
-  height: 8px;
-  background: black;
+.seal{
+  position:absolute;
+  width:78px;
+  height:78px;
+  background:radial-gradient(circle,#ffb703,#fb8500);
+  border-radius:50%;
+  top:50%;
+  left:50%;
+  transform:translate(-50%,-50%);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:34px;
+  color:#fff;
+  animation:heartbeat 1.8s infinite;
 }
 
-/* CONFETTI */
-.confetti {
-  position: absolute;
-  width: 8px;
-  height: 8px;
-  animation: fall 3s linear forwards;
+@keyframes heartbeat{
+  50%{transform:translate(-50%,-50%) scale(1.12);}
 }
 
-@keyframes fall {
-  from { transform: translateY(-10px); }
-  to { transform: translateY(100vh); }
+/* 📖 CARD */
+#cardWrapper{
+  display:none;
+  animation:softOpen 3s ease forwards;
 }
 
-/* GLITCH EFFECT */
-.glitch {
-  animation: glitch 0.15s infinite;
+@keyframes softOpen{
+  from{opacity:0; transform:scale(.88);}
+  to{opacity:1; transform:scale(1);}
 }
 
-@keyframes glitch {
-  0% { transform: translate(0); }
-  20% { transform: translate(-2px, 2px); }
-  40% { transform: translate(2px, -2px); }
-  60% { transform: translate(-1px, 1px); }
-  80% { transform: translate(1px, -1px); }
+.card{
+  width:min(96vw,900px);
+  height:min(86vh,560px);
+  background:linear-gradient(#fff7ec,#fff1e6);
+  border-radius:30px;
+  display:flex;
+  position:relative;
+  box-shadow:
+    0 0 80px rgba(255,183,77,.4),
+    0 40px 90px rgba(0,0,0,.6);
 }
 
-/* SECRET ENDING */
-.secret {
-  font-size: 11px;
-  color: #ffb6ff;
-  margin-top: 12px;
+/* gold inner frame */
+.card::before{
+  content:"";
+  position:absolute;
+  inset:14px;
+  border:2px solid rgba(255,183,77,.4);
+  border-radius:22px;
+  pointer-events:none;
 }
 
-.hidden { display: none; }
-.win {
-  font-size: 11px;
-  color: #ffe66d;
+.page{
+  width:50%;
+  padding:clamp(24px,3vw,44px);
+  overflow-y:auto;
+}
+
+.left{
+  animation:leftPage 3s ease forwards;
+}
+
+.right{
+  opacity:0;
+  animation:rightPage 3.5s ease forwards;
+}
+
+@keyframes leftPage{
+  from{transform:rotateY(-10deg);}
+  to{transform:rotateY(0);}
+}
+
+@keyframes rightPage{
+  from{opacity:0; transform:translateX(50px);}
+  to{opacity:1; transform:translateX(0);}
+}
+
+h2{
+  font-family:'Great Vibes', cursive;
+  font-size:clamp(40px,5vw,56px);
+  color:#b45309;
+  text-align:center;
+}
+
+#letterText{
+  margin-top:30px;
+  font-size:clamp(16px,2.5vw,19px);
+  line-height:2;
+  color:#3a2a1a;
+}
+
+/* QUESTION */
+#question{
+  margin-top:40px;
+  text-align:center;
+  display:none;
+}
+
+button{
+  padding:16px 42px;
+  border:none;
+  background:linear-gradient(135deg,#ffb703,#fb8500);
+  color:#fff;
+  font-size:18px;
+  border-radius:50px;
+  cursor:pointer;
+}
+
+/* 🎵 MUSIC */
+#musicBtn{
+  position:fixed;
+  bottom:20px;
+  right:20px;
+  width:56px;
+  height:56px;
+  border-radius:50%;
+  border:none;
+  background:#fb8500;
+  color:#fff;
+  font-size:22px;
 }
 </style>
 </head>
 
 <body>
 
-<div class="game" id="game">
-  <div class="title" id="title">A PIXEL STORY BEGINS...</div>
-  <div class="arena" id="arena">
-    <div class="story-text" id="storyText"></div>
-  </div>
-  <button class="btn" id="btn">START</button>
+<!-- candle glow -->
+<div class="glow" style="top:20%; left:25%;"></div>
+<div class="glow" style="top:30%; right:20%;"></div>
 
-  <div class="win hidden" id="win">
-    🎉 YOU WIN 🎉<br><br>
-    WILL YOU BE MINE? ❤️
-  </div>
+<!-- MUSIC -->
+<audio id="music" preload="auto" loop>
+  <source src="https://cdn.pixabay.com/download/audio/2022/11/28/audio_20ed9f99c1.mp3" type="audio/mpeg">
+</audio>
+<button id="musicBtn">🎵</button>
 
-  <div class="secret hidden" id="secret">
-    💖 SECRET ENDING UNLOCKED 💖<br><br>
-    YOU DIDN’T JUST WIN THE GAME…<br>
-    YOU WON MY HEART 😌<br><br>
-    PLAYER 1 🤝 PLAYER 2<br>
-    FOREVER MODE: ON 💑
+<!-- INTRO -->
+<div id="intro">
+  <h1>I wrote this under the quiet night sky,<br>by candlelight… 🕯️</h1>
+</div>
+
+<!-- ENVELOPE -->
+<div id="envelopeBox">
+  <div class="envelope" id="envelope">
+    <div class="seal">❤</div>
+  </div>
+  <p style="color:#ffe8cc;margin-top:20px;font-size:18px;">Tap to open 💌</p>
+</div>
+
+<!-- CARD -->
+<div id="cardWrapper">
+  <div class="card">
+    <div class="page left">
+      <h2>My Love</h2>
+      <div id="letterText"></div>
+    </div>
+    <div class="page right">
+      <h2>One Question</h2>
+      <p>Some feelings are meant to be whispered at night…</p>
+      <div id="question">
+        <h3>Can you be my Valentine? ❤️</h3>
+        <button onclick="yes()">YES 💖</button>
+      </div>
+    </div>
   </div>
 </div>
 
 <script>
-const arena = document.getElementById("arena");
-const storyText = document.getElementById("storyText");
-const btn = document.getElementById("btn");
-const win = document.getElementById("win");
-const secret = document.getElementById("secret");
-const title = document.getElementById("title");
-const game = document.getElementById("game");
+/* intro */
+setTimeout(()=>{
+  intro.style.display="none";
+  envelopeBox.style.display="block";
+},3500);
 
-const story = [
-  "IN A WORLD FULL OF RANDOM MOMENTS...",
-  "TWO HEARTS CROSSED PATHS",
-  "LAUGHS TURNED INTO MEMORIES",
-  "ONE QUESTION REMAINS..."
-];
+/* envelope click */
+envelopeBox.onclick=()=>{
+  music.volume=1;
+  music.play();
+  envelope.classList.add("open");
 
-let line = 0;
-let char = 0;
-let typing;
-
-function typeStory() {
-  if (char < story[line].length) {
-    storyText.innerHTML += story[line][char++];
-    typing = setTimeout(typeStory, 40);
-  } else {
-    storyText.innerHTML += "<br><br><span class='blink'>PRESS START ▮</span>";
-  }
-}
-
-btn.onclick = () => {
-  if (line < story.length) {
-    clearTimeout(typing);
-    storyText.innerHTML = "";
-    char = 0;
-    typeStory();
-    line++;
-  } else {
-    btn.classList.add("hidden");
-    startAvatars();
-  }
+  setTimeout(()=>{
+    envelopeBox.style.display="none";
+    cardWrapper.style.display="block";
+    typeText();
+  },2200);
 };
 
-typeStory();
+/* typing */
+const text=[
+"Under the quiet sky,",
+"with only candlelight beside me…",
+"",
+"I found myself thinking of you.",
+"",
+"Your smile feels warmer than this flame,",
+"your presence calmer than the night.",
+"",
+"I don’t promise perfection,",
+"but I promise something real —",
+"a heart that chooses you, always.",
+"",
+"So tonight, I ask you…"
+];
 
-/* AVATAR WALK-IN */
-function startAvatars() {
-  arena.innerHTML = "";
-  title.innerText = "THE JOURNEY BEGINS";
-
-  const you = createAvatar("you");
-  const crush = createAvatar("crush");
-
-  let pos = -30;
-  const walk = setInterval(() => {
-    pos += 2;
-    you.style.left = pos + "px";
-    crush.style.left = (arena.clientWidth - pos - 24) + "px";
-    if (pos > 200) {
-      clearInterval(walk);
-      startLevel1();
-    }
-  }, 30);
-}
-
-function createAvatar(type) {
-  const a = document.createElement("div");
-  a.className = "avatar " + type;
-  for (let i = 0; i < 9; i++) {
-    a.appendChild(document.createElement("div")).className = "pixel";
-  }
-  arena.appendChild(a);
-  return a;
-}
-
-/* LEVEL 1 */
-function startLevel1() {
-  arena.innerHTML = "";
-  title.innerText = "LEVEL 1 — TAP THE HEART ❤️";
-
-  const heart = createObj("❤️", "heart");
-  moveRandom(heart);
-  const move = setInterval(() => moveRandom(heart), 700);
-
-  heart.onclick = () => {
-    clearInterval(move);
-    startLevel2();
-  };
-}
-
-/* LEVEL 2 */
-function startLevel2() {
-  arena.innerHTML = "";
-  title.innerText = "LEVEL 2 — FIND THE REAL HEART 💖";
-
-  const real = createObj("❤️", "heart");
-  real.onclick = startLevel3;
-
-  for (let i = 0; i < 4; i++) {
-    const fake = createObj("💔", "fake");
-    fake.onclick = () => moveRandom(fake);
-  }
-
-  randomizeAll();
-}
-
-/* LEVEL 3 */
-function startLevel3() {
-  arena.innerHTML = "";
-  title.innerText = "FINAL LEVEL — CHOOSE WISELY 😳";
-
-  const yes = createObj("YES", "yes");
-  yes.style.left = "200px";
-  yes.style.top = "70px";
-
-  yes.onclick = () => {
-    showWin();
-    setTimeout(secretEnding, 2000);
-  };
-
-  for (let i = 0; i < 3; i++) {
-    const no = createObj("NO", "no");
-    moveRandom(no);
-    no.onclick = () => moveRandom(no);
+let i=0;
+function typeText(){
+  if(i<text.length){
+    letterText.innerHTML+=text[i]+"<br>";
+    i++;
+    setTimeout(typeText,950);
+  }else{
+    question.style.display="block";
   }
 }
 
-function showWin() {
-  arena.innerHTML = "";
-  win.classList.remove("hidden");
-  confetti(120);
-}
+/* music toggle */
+musicBtn.onclick=()=>{
+  music.paused ? music.play() : music.pause();
+};
 
-/* SECRET ENDING */
-function secretEnding() {
-  game.classList.add("glitch");
-  setTimeout(() => {
-    game.classList.remove("glitch");
-    win.classList.add("hidden");
-    secret.classList.remove("hidden");
-    confetti(250);
-  }, 800);
-}
-
-/* HELPERS */
-function createObj(text, cls) {
-  const el = document.createElement("div");
-  el.className = "obj " + cls;
-  el.textContent = text;
-  arena.appendChild(el);
-  return el;
-}
-
-function moveRandom(el) {
-  el.style.left = Math.random() * 360 + "px";
-  el.style.top = Math.random() * 120 + "px";
-}
-
-function randomizeAll() {
-  document.querySelectorAll(".obj").forEach(moveRandom);
-}
-
-function confetti(count) {
-  const colors = ["#ff77aa", "#ffe66d", "#7cff6b", "#6bc1ff"];
-  for (let i = 0; i < count; i++) {
-    const c = document.createElement("div");
-    c.className = "confetti";
-    c.style.left = Math.random() * window.innerWidth + "px";
-    c.style.background = colors[Math.floor(Math.random() * colors.length)];
-    document.body.appendChild(c);
-    setTimeout(() => c.remove(), 3000);
-  }
+/* whatsapp */
+function yes(){
+  const phoneNumber = "919326032983"; // India number with country code
+  const msg = encodeURIComponent(
+    "YES ❤️ I would love to be your Valentine!\nThis candlelit letter touched my heart 🕯️💕"
+  );
+  window.location.href = `https://wa.me/${phoneNumber}?text=${msg}`;
 }
 </script>
 
