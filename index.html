@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>A Candlelit Letter ❤️</title>
+<title>Candlelight Letter ❤️</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Playfair+Display&display=swap" rel="stylesheet">
 
@@ -12,67 +12,66 @@
 
 body{
   height:100vh;
-  background: radial-gradient(circle at top, #1b1f3b, #0b0f2a);
+  background:radial-gradient(circle at top,#1b1f3b,#050717);
+  font-family:'Playfair Display',serif;
   display:flex;
   justify-content:center;
   align-items:center;
-  font-family:'Playfair Display', serif;
   overflow:hidden;
 }
 
-/* 🌌 vignette */
-body::after{
+/* 🌌 stars */
+body::before{
   content:"";
   position:absolute;
   inset:0;
-  background:radial-gradient(circle, transparent 40%, rgba(0,0,0,.8));
-  pointer-events:none;
+  background:
+    radial-gradient(2px 2px at 20% 30%,#fff,transparent),
+    radial-gradient(2px 2px at 70% 60%,#fff,transparent),
+    radial-gradient(1px 1px at 40% 80%,#fff,transparent);
+  opacity:.5;
 }
 
-/* 🕯️ floating candle glow */
+/* 🕯 candle glow */
 .glow{
   position:absolute;
-  width:160px;
-  height:160px;
-  background:radial-gradient(circle, rgba(255,183,77,.4), transparent 70%);
+  width:180px;
+  height:180px;
+  background:radial-gradient(circle,rgba(255,183,77,.45),transparent 70%);
   animation:flicker 3s infinite alternate;
   pointer-events:none;
 }
 
 @keyframes flicker{
-  from{opacity:.6; transform:scale(1);}
-  to{opacity:.9; transform:scale(1.08);}
+  from{opacity:.6;transform:scale(1);}
+  to{opacity:.9;transform:scale(1.08);}
 }
 
 /* INTRO */
 #intro{
-  color:#fbeee6;
   text-align:center;
+  color:#ffe8cc;
   animation:fadeIn 3s forwards;
 }
-
 @keyframes fadeIn{
-  from{opacity:0;transform:translateY(-25px);}
+  from{opacity:0;transform:translateY(-30px);}
   to{opacity:1;}
 }
 
-/* 💌 ENVELOPE */
+/* ENVELOPE */
 #envelopeBox{
   display:none;
-  cursor:pointer;
   text-align:center;
+  cursor:pointer;
 }
-
 .envelope{
   width:min(90vw,520px);
   height:min(60vw,340px);
-  background:linear-gradient(#fdf1e7,#fff);
+  background:linear-gradient(#fff7ec,#fff);
   border-radius:24px;
-  box-shadow:0 40px 90px rgba(255,183,77,.35);
   position:relative;
-  overflow:hidden;
+  box-shadow:0 40px 90px rgba(255,183,77,.35);
 }
-
 .envelope::before{
   content:"";
   position:absolute;
@@ -80,124 +79,93 @@ body::after{
   background:linear-gradient(135deg,#ffd8a8,#ffb703);
   clip-path:polygon(0 0,50% 65%,100% 0);
   transform-origin:top;
-  transition:transform 2.2s ease;
+  transition:2s;
 }
-
 .envelope.open::before{
   transform:rotateX(180deg);
 }
-
 .seal{
-  position:absolute;
-  width:78px;
-  height:78px;
+  width:78px;height:78px;
   background:radial-gradient(circle,#ffb703,#fb8500);
   border-radius:50%;
-  top:50%;
-  left:50%;
+  position:absolute;
+  top:50%;left:50%;
   transform:translate(-50%,-50%);
   display:flex;
   align-items:center;
   justify-content:center;
   font-size:34px;
   color:#fff;
-  animation:heartbeat 1.8s infinite;
+  animation:heartbeat 1.6s infinite;
 }
-
 @keyframes heartbeat{
   50%{transform:translate(-50%,-50%) scale(1.12);}
 }
 
-/* 📖 CARD */
+/* LETTER CARD (single scroll) */
 #cardWrapper{
   display:none;
-  animation:softOpen 3s ease forwards;
+  animation:softOpen 2s forwards;
 }
-
 @keyframes softOpen{
-  from{opacity:0; transform:scale(.88);}
-  to{opacity:1; transform:scale(1);}
+  from{opacity:0;transform:scale(.92);}
+  to{opacity:1;}
 }
 
 .card{
-  width:min(96vw,900px);
-  height:min(86vh,560px);
+  width:min(94vw,760px);
+  height:88vh;
   background:linear-gradient(#fff7ec,#fff1e6);
   border-radius:30px;
-  display:flex;
-  position:relative;
+  padding:clamp(22px,4vw,42px);
   box-shadow:
-    0 0 80px rgba(255,183,77,.4),
+    0 0 80px rgba(255,183,77,.35),
     0 40px 90px rgba(0,0,0,.6);
+  overflow-y:auto;
+  position:relative;
 }
 
-/* gold inner frame */
+/* gold border */
 .card::before{
   content:"";
   position:absolute;
   inset:14px;
-  border:2px solid rgba(255,183,77,.4);
+  border:2px solid rgba(255,183,77,.35);
   border-radius:22px;
   pointer-events:none;
 }
 
-.page{
-  width:50%;
-  padding:clamp(24px,3vw,44px);
-  overflow-y:auto;
-}
-
-.left{
-  animation:leftPage 3s ease forwards;
-}
-
-.right{
-  opacity:0;
-  animation:rightPage 3.5s ease forwards;
-}
-
-@keyframes leftPage{
-  from{transform:rotateY(-10deg);}
-  to{transform:rotateY(0);}
-}
-
-@keyframes rightPage{
-  from{opacity:0; transform:translateX(50px);}
-  to{opacity:1; transform:translateX(0);}
-}
-
 h2{
-  font-family:'Great Vibes', cursive;
-  font-size:clamp(40px,5vw,56px);
-  color:#b45309;
+  font-family:'Great Vibes',cursive;
+  font-size:clamp(42px,6vw,56px);
   text-align:center;
+  color:#b45309;
 }
 
 #letterText{
   margin-top:30px;
-  font-size:clamp(16px,2.5vw,19px);
   line-height:2;
+  font-size:clamp(16px,2.6vw,19px);
   color:#3a2a1a;
 }
 
 /* QUESTION */
 #question{
-  margin-top:40px;
-  text-align:center;
   display:none;
+  text-align:center;
+  margin:50px 0 20px;
 }
-
 button{
   padding:16px 42px;
   border:none;
+  border-radius:50px;
   background:linear-gradient(135deg,#ffb703,#fb8500);
   color:#fff;
   font-size:18px;
-  border-radius:50px;
   cursor:pointer;
 }
 
-/* 🎵 MUSIC */
+/* MUSIC BUTTON */
 #musicBtn{
   position:fixed;
   bottom:20px;
@@ -215,19 +183,19 @@ button{
 
 <body>
 
-<!-- candle glow -->
-<div class="glow" style="top:20%; left:25%;"></div>
-<div class="glow" style="top:30%; right:20%;"></div>
+<div class="glow" style="top:20%;left:20%"></div>
+<div class="glow" style="top:35%;right:20%"></div>
 
-<!-- MUSIC -->
-<audio id="music" preload="auto" loop>
-  <source src="https://cdn.pixabay.com/download/audio/2022/11/28/audio_20ed9f99c1.mp3" type="audio/mpeg">
-</audio>
+<!-- 🎵 MUSIC -->
+<audio id="music" loop playsinline>
+    <source src="the_mountain-romantic-143301.mp3" type="audio/mpeg">
+  </audio>
+  
 <button id="musicBtn">🎵</button>
 
 <!-- INTRO -->
 <div id="intro">
-  <h1>I wrote this under the quiet night sky,<br>by candlelight… 🕯️</h1>
+  <h1>I wrote this by candlelight,<br>thinking of you… 🕯️</h1>
 </div>
 
 <!-- ENVELOPE -->
@@ -235,51 +203,61 @@ button{
   <div class="envelope" id="envelope">
     <div class="seal">❤</div>
   </div>
-  <p style="color:#ffe8cc;margin-top:20px;font-size:18px;">Tap to open 💌</p>
+  <p style="color:#ffe8cc;margin-top:18px">(Tap to open 💌)</p>
 </div>
 
-<!-- CARD -->
+<!-- LETTER -->
 <div id="cardWrapper">
-  <div class="card">
-    <div class="page left">
-      <h2>My Love</h2>
-      <div id="letterText"></div>
-    </div>
-    <div class="page right">
-      <h2>One Question</h2>
-      <p>Some feelings are meant to be whispered at night…</p>
-      <div id="question">
-        <h3>Can you be my Valentine? ❤️</h3>
-        <button onclick="yes()">YES 💖</button>
-      </div>
+  <div class="card" id="card">
+    <h2>My Love</h2>
+    <div id="letterText"></div>
+
+    <div id="question">
+      <h3>Can you be my Valentine? ❤️</h3><br>
+      <button onclick="yes()">YES 💖</button>
     </div>
   </div>
 </div>
 
 <script>
-/* intro */
+const intro=document.getElementById("intro");
+const envelopeBox=document.getElementById("envelopeBox");
+const envelope=document.getElementById("envelope");
+const cardWrapper=document.getElementById("cardWrapper");
+const card=document.getElementById("card");
+const letterText=document.getElementById("letterText");
+const music=document.getElementById("music");
+const musicBtn=document.getElementById("musicBtn");
+
+/* show envelope */
 setTimeout(()=>{
   intro.style.display="none";
   envelopeBox.style.display="block";
-},3500);
+},3000);
 
-/* envelope click */
+/* envelope click = START MUSIC */
 envelopeBox.onclick=()=>{
-  music.volume=1;
-  music.play();
+  music.currentTime=0;
+  music.volume=0.8;
+
+  const playPromise=music.play();
+  if(playPromise!==undefined){
+    playPromise.catch(()=>{});
+  }
+
   envelope.classList.add("open");
 
   setTimeout(()=>{
     envelopeBox.style.display="none";
     cardWrapper.style.display="block";
     typeText();
-  },2200);
+  },2000);
 };
 
-/* typing */
+/* typing text */
 const text=[
-"Under the quiet sky,",
-"with only candlelight beside me…",
+"Under the quiet night sky,",
+"with only a candle beside me…",
 "",
 "I found myself thinking of you.",
 "",
@@ -290,7 +268,7 @@ const text=[
 "but I promise something real —",
 "a heart that chooses you, always.",
 "",
-"So tonight, I ask you…"
+"So tonight, with hope glowing softly…"
 ];
 
 let i=0;
@@ -298,24 +276,32 @@ function typeText(){
   if(i<text.length){
     letterText.innerHTML+=text[i]+"<br>";
     i++;
-    setTimeout(typeText,950);
+    card.scrollTop=card.scrollHeight;
+    setTimeout(typeText,900);
   }else{
-    question.style.display="block";
+    document.getElementById("question").style.display="block";
+    document.getElementById("question")
+      .scrollIntoView({behavior:"smooth"});
   }
 }
 
 /* music toggle */
 musicBtn.onclick=()=>{
-  music.paused ? music.play() : music.pause();
+  if(music.paused){
+    music.play();
+    musicBtn.textContent="⏸";
+  }else{
+    music.pause();
+    musicBtn.textContent="🎵";
+  }
 };
 
-/* whatsapp */
+/* whatsapp redirect */
 function yes(){
-  const phoneNumber = "919326032983"; // India number with country code
-  const msg = encodeURIComponent(
-    "YES ❤️ I would love to be your Valentine!\nThis candlelit letter touched my heart 🕯️💕"
+  const msg=encodeURIComponent(
+    "YES ❤️ Your candlelit letter touched my heart 🕯️"
   );
-  window.location.href = `https://wa.me/${phoneNumber}?text=${msg}`;
+  window.location.href="https://wa.me/919326032983?text="+msg;
 }
 </script>
 
